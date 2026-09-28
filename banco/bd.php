@@ -31,4 +31,22 @@ class Bd {
         }
         return true;
     }
+
+    public function change_desafio_status(
+        int $desafio_id, 
+        string $status
+    ) {
+        $query = "UPDATE desafios SET status={$status} WHERE id={$desafio_id}";
+        mysqli_query($this->con, $query);
+    }
+    
+    public function save_submissao(
+        int $usuario_id,
+        int $desafio_id,
+        int $modelo_id,
+        string $prompt,
+        string $resposta
+    ) {
+        // Checar se data de submissão é maior que a data_limite
+    }
 }

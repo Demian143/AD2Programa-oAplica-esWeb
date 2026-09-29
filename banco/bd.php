@@ -23,7 +23,7 @@ class Bd {
         if (!$this->con) {
             return null;
         }
-        $query = "SELECT * FROM submissoes WHERE usuario_id={$usuario_id} AND modelo_id={$modelo_id} AND desafio_id={$desafio_id}";
+        $query = "SELECT * FROM submissoes WHERE usuario_id={$usuario_id} AND modelo_id={$modelo_id} AND desafio_id={$desafio_id};";
         $resp = mysqli_query($this->con, $query);
         if (count($resp) > 0) {
             // Se o usuario já tem um modelo enviado a resposta é negativa
@@ -36,8 +36,32 @@ class Bd {
         int $desafio_id, 
         string $status
     ) {
-        $query = "UPDATE desafios SET status={$status} WHERE id={$desafio_id}";
-        mysqli_query($this->con, $query);
+        if ($status == "aberto") {
+            $query = "UPDATE desafios SET status={$status} WHERE id={$desafio_id}";
+            mysqli_query($this->con, $query);
+            return;
+        }
+
+        // RN06
+        $query_correcao_de_notas = "UPDATE usuarios as usuario
+                                    
+                                    INNER JOIN ( 
+                                        SELECT usuario_id, MAX(nota) AS max_nota
+                                        FROM submissoes 
+                                        WHERE desafio_id={$desafio_id}
+                                        GROUP BY usuario_id
+                                    ) as submissao ON usuario.id=submissao.usuario_id
+                                    
+                                    INNER JOIN desafios as desafio ON desafio.id={$desafio_id}
+                                    
+                                    SET usuario.pontos = 
+                                        CASE 
+                                            WHEN max_nota >= 90 THEN 10
+                                            WHEN max_nota >= 70 AND max_nota < 90 THEN 5
+                                            ELSE 0
+                                        END
+                                    WHERE usuario.id=submissao.usuario_id;";
+        
     }
     
     public function save_submissao(

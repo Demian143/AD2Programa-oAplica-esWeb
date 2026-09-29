@@ -49,20 +49,33 @@ class Bd {
         float $nota
     ) {
         // Checar se data de submissão é maior que a data_limite
+        // RN03
         $query_data_limite = "SELECT data_limite, status FROM desafios WHERE id={$desafio_id}";
         $resp = mysqli_query($this->con, $query_data_limite)->fetch_assoc();
-        
+        // RN02
         if ($resp["status"] == "finalizado") {
             throw new Exception("Desafio já finalizado");
         }
-
+        // RN03
         $data_limite = new DateTime($resp["data_limite"]);
         $today = new DateTime();
 
         if ($today > $data_limite) {
             throw new Exception("Submissão após data limite.");
         }
+        // RN04
+        $query_modelo_ativo = "SELECT status FROM modelos WHERE id={$modelo_id}";
+        $modelo = mysqli_query($this->con, $query_modelo_ativo)->fetch_assoc();
+        if ($modelo["status"] == "inativo") {
+            throw new Exception("Modelo inativo.");
+        }
 
+        // RN05
+        if ( 0 > $nota > 100) {
+            throw new Exception("Nota invalida.");
+        }
+
+        
         $query_salvar_requisicao = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta, nota) VALUES ({$usuario_id}, {$desafio_id}, {$modelo_id}, {$prompt}, {$resposta}, {$nota})";
         mysqli_query($this->con, $query_salvar_requisicao);
     }

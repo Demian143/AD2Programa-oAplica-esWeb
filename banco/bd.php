@@ -48,8 +48,16 @@ class Bd {
         string $resposta,
         float $nota
     ) {
-        // Checar se data de submissão é maior que a data_limite
-        // RN03
+        // RN01
+        // Um usuário não pode realizar mais de uma submissão utilizando o mesmo
+        // modelo de Inteligência Artificial em um mesmo desafio.
+        $query_submissao_duplicada = "SELECT * FROM submissoes WHERE usuario_id={$usuario_id} AND desafio_id={$desafio_id} AND modelo_id={$modelo_id}";
+        $resp_submissao_duplicada = mysqli_query($this->con, $query_submissao_duplicada)->fetch_array();
+
+        if (count($resp_submissao_duplicada) > 0) {
+            throw new Exception("Submissão duplicada");
+        }
+
         $query_data_limite = "SELECT data_limite, status FROM desafios WHERE id={$desafio_id}";
         $resp = mysqli_query($this->con, $query_data_limite)->fetch_assoc();
         // RN02
@@ -69,12 +77,10 @@ class Bd {
         if ($modelo["status"] == "inativo") {
             throw new Exception("Modelo inativo.");
         }
-
         // RN05
         if ( 0 > $nota > 100) {
             throw new Exception("Nota invalida.");
         }
-
         
         $query_salvar_requisicao = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta, nota) VALUES ({$usuario_id}, {$desafio_id}, {$modelo_id}, {$prompt}, {$resposta}, {$nota})";
         mysqli_query($this->con, $query_salvar_requisicao);

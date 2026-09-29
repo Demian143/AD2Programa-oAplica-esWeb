@@ -45,8 +45,20 @@ class Bd {
         int $desafio_id,
         int $modelo_id,
         string $prompt,
-        string $resposta
+        string $resposta,
+        float $nota
     ) {
         // Checar se data de submissão é maior que a data_limite
+        $query_data_limite = "SELECT data_limite FROM desafios WHERE id={$desafio_id}";
+        $resp = mysqli_query($this->con, $query_data_limite);
+        $data_limite = new DateTime($resp);
+        $today = new DateTime();
+
+        if ($today > $data_limite) {
+            throw new Exception("Submissão após data limite.");
+        }
+
+        $query_salvar_requisicao = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta, nota) VALUES ({$usuario_id}, {$desafio_id}, {$modelo_id}, {$prompt}, {$resposta}, {$nota})";
+        mysqli_query($this->con, $query_salvar_requisicao);
     }
 }

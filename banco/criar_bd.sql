@@ -34,7 +34,7 @@ create table submissoes (
     prompt TEXT,
     resposta TEXT,
     nota DECIMAL(5,2),
-    data_submissao DATETIME,
+    data_submissao DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     CONSTRAINT fk_desafio FOREIGN KEY (desafio_id) REFERENCES desafios(id),
     CONSTRAINT fk_modelo FOREIGN KEY (modelo_id) REFERENCES modelos(id)

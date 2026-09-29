@@ -11,9 +11,8 @@ create table usuarios (
 create table modelos (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100),
-    descricao TEXT,
-    categoria VARCHAR(50),
-    data_limite DATETIME,
+    empresa VARCHAR(100),
+    versao VARCHAR(50),
     status ENUM('aberto', 'finalizado')
 );
 

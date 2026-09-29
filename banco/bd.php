@@ -49,9 +49,14 @@ class Bd {
         float $nota
     ) {
         // Checar se data de submissão é maior que a data_limite
-        $query_data_limite = "SELECT data_limite FROM desafios WHERE id={$desafio_id}";
-        $resp = mysqli_query($this->con, $query_data_limite);
-        $data_limite = new DateTime($resp);
+        $query_data_limite = "SELECT data_limite, status FROM desafios WHERE id={$desafio_id}";
+        $resp = mysqli_query($this->con, $query_data_limite)->fetch_assoc();
+        
+        if ($resp["status"] == "finalizado") {
+            throw new Exception("Desafio já finalizado");
+        }
+
+        $data_limite = new DateTime($resp["data_limite"]);
         $today = new DateTime();
 
         if ($today > $data_limite) {

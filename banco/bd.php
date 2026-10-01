@@ -37,23 +37,21 @@ class Bd {
         string $status
     ) {
         if ($status == "aberto") {
-            $query = "UPDATE desafios SET status={$status} WHERE id={$desafio_id}";
+            $query = "UPDATE desafios SET status={$status} WHERE id={$desafio_id};";
             mysqli_query($this->con, $query);
             return;
         }
 
         // RN06
         $query_correcao_de_notas = "UPDATE usuarios as usuario
-                                    
-                                    INNER JOIN ( 
+
+                                    INNER JOIN (
                                         SELECT usuario_id, MAX(nota) AS max_nota
                                         FROM submissoes 
                                         WHERE desafio_id={$desafio_id}
                                         GROUP BY usuario_id
-                                    ) as submissao ON usuario.id=submissao.usuario_id
-                                    
-                                    INNER JOIN desafios as desafio ON desafio.id={$desafio_id}
-                                    
+                                    ) AS submissao ON usuario.id=submissao.usuario_id
+    
                                     SET usuario.pontos = 
                                         CASE 
                                             WHEN max_nota >= 90 THEN 10
@@ -61,9 +59,48 @@ class Bd {
                                             ELSE 0
                                         END
                                     WHERE usuario.id=submissao.usuario_id;";
+        mysqli_query($this->con, $query_correcao_de_notas);
         
+        $query_set_status_finalizado = "UPDATE desafios SET status={$status} WHERE id={$desafio_id};";
+        mysqli_query($this->con, $query_set_status_finalizado);
     }
     
+    public function remove_desafio(int $desafio_id) {
+        //RN07
+        $query_desafio_tem_submissoes = "SELECT * FROM submissoes WHERE desafio_id={$desafio_id};";
+        $res = mysqli_query($this->con, $query_desafio_tem_submissoes)->fetch_array();
+        if (count($res) > 0) {
+            throw new Exception("Há submissões relacionadas.");
+        }
+
+        $query_remover_desafio = "DELETE FROM desafios WHERE id={$desafio_id};";
+        mysqli_query($this->con, $query_remover_desafio);
+    }
+
+    public function remove_modelo(int $modelo_id) {
+        //RN08
+        $query_desafio_tem_submissoes = "SELECT * FROM submissoes WHERE modelo_id={$modelo_id};";
+        $res = mysqli_query($this->con, $query_desafio_tem_submissoes)->fetch_array();
+        if (count($res) > 0) {
+            throw new Exception("Há submissões relacionadas.");
+        }
+
+        $query_remover_desafio = "DELETE FROM modelos WHERE id={$modelo_id};";
+        mysqli_query($this->con, $query_remover_desafio);
+    }
+
+    public function remove_usuario(int $usuario_id) {
+        //RN10
+        $query_desafio_tem_submissoes = "SELECT * FROM submissoes WHERE usuario_id={$usuario_id};";
+        $res = mysqli_query($this->con, $query_desafio_tem_submissoes)->fetch_array();
+        if (count($res) > 0) {
+            throw new Exception("Há submissões relacionadas.");
+        }
+
+        $query_remover_desafio = "DELETE FROM usuarios WHERE id={$usuario_id};";
+        mysqli_query($this->con, $query_remover_desafio);
+    }
+
     public function save_submissao(
         int $usuario_id,
         int $desafio_id,
@@ -75,14 +112,14 @@ class Bd {
         // RN01
         // Um usuário não pode realizar mais de uma submissão utilizando o mesmo
         // modelo de Inteligência Artificial em um mesmo desafio.
-        $query_submissao_duplicada = "SELECT * FROM submissoes WHERE usuario_id={$usuario_id} AND desafio_id={$desafio_id} AND modelo_id={$modelo_id}";
+        $query_submissao_duplicada = "SELECT * FROM submissoes WHERE usuario_id={$usuario_id} AND desafio_id={$desafio_id} AND modelo_id={$modelo_id};";
         $resp_submissao_duplicada = mysqli_query($this->con, $query_submissao_duplicada)->fetch_array();
 
         if (count($resp_submissao_duplicada) > 0) {
             throw new Exception("Submissão duplicada");
         }
 
-        $query_data_limite = "SELECT data_limite, status FROM desafios WHERE id={$desafio_id}";
+        $query_data_limite = "SELECT data_limite, status FROM desafios WHERE id={$desafio_id};";
         $resp = mysqli_query($this->con, $query_data_limite)->fetch_assoc();
         // RN02
         if ($resp["status"] == "finalizado") {
@@ -96,7 +133,7 @@ class Bd {
             throw new Exception("Submissão após data limite.");
         }
         // RN04
-        $query_modelo_ativo = "SELECT status FROM modelos WHERE id={$modelo_id}";
+        $query_modelo_ativo = "SELECT status FROM modelos WHERE id={$modelo_id};";
         $modelo = mysqli_query($this->con, $query_modelo_ativo)->fetch_assoc();
         if ($modelo["status"] == "inativo") {
             throw new Exception("Modelo inativo.");
@@ -106,7 +143,7 @@ class Bd {
             throw new Exception("Nota invalida.");
         }
         
-        $query_salvar_requisicao = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta, nota) VALUES ({$usuario_id}, {$desafio_id}, {$modelo_id}, {$prompt}, {$resposta}, {$nota})";
+        $query_salvar_requisicao = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta, nota) VALUES ({$usuario_id}, {$desafio_id}, {$modelo_id}, {$prompt}, {$resposta}, {$nota});";
         mysqli_query($this->con, $query_salvar_requisicao);
     }
 }

@@ -1,6 +1,7 @@
 <?php
+namespace Banco;
 
-class Bd {
+class BD {
     private $con = null;
     public function __construct(
         private string $host,
@@ -16,6 +17,26 @@ class Bd {
             $this->password, 
             $this->database
             );
+    }
+
+    public function list_submissoes(): array {
+        $query = "SELECT id, usuario_id, desafio_id, modelo_id, nota, data_submissao FROM submissoes";
+        return mysqli_query($this->con, $query)->fetch_array();
+    }
+
+    public function list_desafios(): array {
+        $query = "SELECT titulo, descricao, categoria, data_limite, status FROM modelos";
+        return mysqli_query($this->con, $query)->fetch_array();
+    }
+
+    public function list_usuarios(): array {
+        $query = "SELECT id, nome, nickname, email, pontos FROM usuarios";
+        return mysqli_query($this->con, $query)->fetch_array();
+    }
+
+    public function list_modelos(): array {
+        $query = "SELECT id, nome, empresa, versao, status FROM modelos";
+        return mysqli_query($this->con, $query)->fetch_array();
     }
 
     public function ai_model_already_exists(int $usuario_id, int $modelo_id, int $desafio_id): bool | null {

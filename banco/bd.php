@@ -25,7 +25,7 @@ class BD {
     }
 
     public function list_desafios(): array {
-        $query = "SELECT titulo, descricao, categoria, data_limite, status FROM modelos";
+        $query = "SELECT id, titulo, descricao, categoria, data_limite, status FROM modelos";
         return mysqli_query($this->con, $query)->fetch_array();
     }
 

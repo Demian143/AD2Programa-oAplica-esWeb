@@ -9,11 +9,11 @@ $modelos = $bd->list_modelos();
     <div class="modelo-list">
         <?php foreach ($modelos as $modelo): ?>
             <div class="modelo-card">
-                <h1><?= htmlspecialchars($submissao['nome']); ?></h1>
+                <h1><?= htmlspecialchars($modelo['nome']); ?></h1>
                 <ul>
-                    <li>Empresa: <?= htmlspecialchars($submissao['empresa']); ?></li>
-                    <li>Versão: <?= htmlspecialchars($submissao['versao']); ?></li>
-                    <li>Status: <?= htmlspecialchars($submissao['status']); ?></li>
+                    <li>Empresa: <?= htmlspecialchars($modelo['empresa']); ?></li>
+                    <li>Versão: <?= htmlspecialchars($modelo['versao']); ?></li>
+                    <li>Status: <?= htmlspecialchars($modelo['status']); ?></li>
                 </ul>
             </div>
         <?php endforeach; ?>

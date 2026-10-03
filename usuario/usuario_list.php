@@ -7,6 +7,9 @@ $usuarios = $bd->list_usuarios();
 ?>
 <html>
     <div class="usuario-list">
+        <a href="./usuario_form.php">
+            <button type="button">Cadastrar Usuario</button>
+        </a>
         <div class="usuario-card">
             <ul>
                 <?php foreach ($usuarios as $usuario): ?>

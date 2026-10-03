@@ -2,6 +2,7 @@
 use Banco\BD;
 
 $bd = new BD("host", "database", "user", "password");
+$bd->connect();
 $submissoes = $bd->list_submissoes();
 ?>
 <html>

@@ -1,15 +1,21 @@
 <?php
+use Banco\BD;
 
+$bd = new BD("host", "database", "user", "password");
+$bd->connect();
+$modelos = $bd->list_modelos();
 ?>
 <html>
     <div class="modelo-list">
-        <div class="modelo-card">
-            <h1>Nome Do Modelo</h1>
-            <ul>
-                <li>Empresa: Exemplo</li>
-                <li>Versão: 2.0</li>
-                <li>Status: ativo</li>
-            </ul>
-        </div>
+        <?php foreach ($modelos as $modelo): ?>
+            <div class="modelo-card">
+                <h1><?= htmlspecialchars($submissao['nome']); ?></h1>
+                <ul>
+                    <li>Empresa: <?= htmlspecialchars($submissao['empresa']); ?></li>
+                    <li>Versão: <?= htmlspecialchars($submissao['versao']); ?></li>
+                    <li>Status: <?= htmlspecialchars($submissao['status']); ?></li>
+                </ul>
+            </div>
+        <?php endforeach; ?>
     </div>
 </html>

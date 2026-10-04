@@ -9,7 +9,10 @@ $desafios = $bd->list_desafios();
     <div class="desafio-list">
         <?php foreach ($desafios as $desafio): ?>
             <div class="desafio-card">
-                <h1><?= htmlspecialchars($desafio['titulo']); ?></h1>
+                <h1><?= htmlspecialchars($desafio['titulo']); ?></h1><br>
+                <a href="desafio_view.php?id=<?php echo urlencode($desafio['id']);?>">
+                    <button type="button">Visualizar detalhes</button>
+                </a>
                 <ul>
                     <li>ID: <?= htmlspecialchars($desafio['id']); ?></li>
                     <li>Categoria: <?= htmlspecialchars($desafio['categoria']); ?></li>

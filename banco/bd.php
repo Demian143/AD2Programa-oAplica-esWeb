@@ -21,6 +21,11 @@ class BD {
             );
     }
 
+    public function get_desafio(int $id): array {
+        $query = "SELECT * FROM desafios WHERE id={$id};";
+        return mysqli_query($this->con, $query)->fetch_assoc();
+    }
+
     public function save_modelo($nome, $empresa, $versao){
         $query = "INSERT INTO modelos (nome, empresa, versao) VALUES ({$nome}, {$empresa}, {$versao});";
         mysqli_query($this->con, $query);

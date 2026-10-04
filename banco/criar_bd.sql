@@ -13,7 +13,7 @@ create table modelos (
     nome VARCHAR(100),
     empresa VARCHAR(100),
     versao VARCHAR(50),
-    status ENUM('ativo', 'inativo')
+    status ENUM('ativo', 'inativo') DEFAULT 'ativo'
 );
 
 create table desafios (

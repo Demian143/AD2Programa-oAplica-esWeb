@@ -7,7 +7,7 @@ $usuarios = $bd->list_usuarios();
 ?>
 <html>
     <div class="usuario-list">
-        <a href="./usuario_form.php">
+        <a href="usuario_form.php">
             <button type="button">Cadastrar Usuario</button>
         </a>
         <div class="usuario-card">

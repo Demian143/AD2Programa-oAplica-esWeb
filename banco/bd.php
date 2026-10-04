@@ -20,6 +20,11 @@ class BD {
             $this->database
             );
     }
+
+    public function save_modelo($nome, $empresa, $versao){
+        $query = "INSERT INTO modelos (nome, empresa, versao) VALUES ({$nome}, {$empresa}, {$versao});";
+        mysqli_query($this->con, $query);
+    }
     
     public function save_desafio(
         string $titulo, 

@@ -22,6 +22,25 @@ class BD {
             );
     }
 
+    public function update_desafio($args) {
+        if (!isset($args['id'])) {
+            return false;
+        }
+
+        $fields = [];
+        foreach ($args as $key => $value) {
+            if ($key === 'id') {
+                continue;
+            }
+            $escaped_value = mysqli_real_escape_string($this->con, $value);
+            $fields[] = "{$key} = '{$escaped_value}'";
+        }
+        $query = "UPDATE desafios SET " . implode(', ', $fields);
+        $query .= " WHERE id = " . (int)$args['id'] . ";";
+
+        return mysqli_query($this->con, $query);
+    }
+    
     public function get_desafio(int $id): array {
         $query = "SELECT * FROM desafios WHERE id={$id};";
         return mysqli_query($this->con, $query)->fetch_assoc();
@@ -181,7 +200,7 @@ class BD {
         int $modelo_id,
         string $prompt,
         string $resposta,
-        float $nota
+        // float $nota
     ) {
         // RN01
         // Um usuário não pode realizar mais de uma submissão utilizando o mesmo
@@ -213,9 +232,9 @@ class BD {
             throw new Exception("Modelo inativo.");
         }
         // RN05
-        if ( 0 > $nota > 100) {
-            throw new Exception("Nota invalida.");
-        }
+        // if ( 0 > $nota > 100) {
+        //    throw new Exception("Nota invalida.");
+        //}
         
         $query_salvar_requisicao = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta, nota) VALUES ({$usuario_id}, {$desafio_id}, {$modelo_id}, {$prompt}, {$resposta}, {$nota});";
         mysqli_query($this->con, $query_salvar_requisicao);

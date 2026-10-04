@@ -5,7 +5,14 @@ $bd = new BD("host", "database", "user", "password");
 $bd->connect();
 $modelos = $bd->list_modelos();
 ?>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
     <div class="modelo-list">
         <?php foreach ($modelos as $modelo): ?>
             <div class="modelo-card">
@@ -18,4 +25,5 @@ $modelos = $bd->list_modelos();
             </div>
         <?php endforeach; ?>
     </div>
+</body>
 </html>

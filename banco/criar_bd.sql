@@ -32,7 +32,7 @@ create table submissoes (
     modelo_id INT,
     prompt TEXT,
     resposta TEXT,
-    nota DECIMAL(5,2),
+    nota DECIMAL(5,2) DEFAULT 0,
     data_submissao DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     CONSTRAINT fk_desafio FOREIGN KEY (desafio_id) REFERENCES desafios(id),

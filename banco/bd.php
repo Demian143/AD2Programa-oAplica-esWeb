@@ -32,6 +32,10 @@ class BD {
         mysqli_query($this->con, $query);
     }
 
+    public function save_submissao(int $usuario_id, int $desafio_id, int $modelo_id, string $prompt, string $resposta) {
+        
+    }
+
     public function save_usuario(string $nome, string $nickname, string $email) {
         $query = "INSERT INTO usuarios (nome, nickname, email) VALUES ({$nome}, {$nickname}, {$email});";
         mysqli_query($this->con, $query);

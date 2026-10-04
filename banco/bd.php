@@ -33,7 +33,8 @@ class BD {
     }
 
     public function save_submissao(int $usuario_id, int $desafio_id, int $modelo_id, string $prompt, string $resposta) {
-        
+        $query = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta) VALUES ({$usuario_id}, {$desafio_id}, {$modelo_id}, {$prompt}, {$resposta});";
+        mysqli_query($this->con, $query);
     }
 
     public function save_usuario(string $nome, string $nickname, string $email) {

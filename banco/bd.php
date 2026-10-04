@@ -26,6 +26,25 @@ class BD {
         return mysqli_query($this->con, $query)->fetch_assoc();
     }
 
+    public function update_modelo(array $args) {
+        if (!isset($args['id'])) {
+            return false;
+        }
+
+        $fields = [];
+        foreach ($args as $key => $value) {
+            if ($key === 'id') {
+                continue;
+            }
+            $escaped_value = mysqli_real_escape_string($this->con, $value);
+            $fields[] = "{$key} = '{$escaped_value}'";
+        }
+        $query = "UPDATE modelos SET " . implode(', ', $fields);
+        $query .= " WHERE id = " . (int)$args['id'] . ";";
+
+        return mysqli_query($this->con, $query);
+    }
+
     public function save_modelo($nome, $empresa, $versao){
         $query = "INSERT INTO modelos (nome, empresa, versao) VALUES ({$nome}, {$empresa}, {$versao});";
         mysqli_query($this->con, $query);
@@ -42,10 +61,10 @@ class BD {
         mysqli_query($this->con, $query);
     }
 
-    public function save_submissao(int $usuario_id, int $desafio_id, int $modelo_id, string $prompt, string $resposta) {
-        $query = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta) VALUES ({$usuario_id}, {$desafio_id}, {$modelo_id}, {$prompt}, {$resposta});";
-        mysqli_query($this->con, $query);
-    }
+    // public function save_submissao(int $usuario_id, int $desafio_id, int $modelo_id, string $prompt, string $resposta) {
+    //    $query = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta) VALUES ({$usuario_id}, {$desafio_id}, {$modelo_id}, {$prompt}, {$resposta});";
+    //    mysqli_query($this->con, $query);
+    //}
 
     public function save_usuario(string $nome, string $nickname, string $email) {
         $query = "INSERT INTO usuarios (nome, nickname, email) VALUES ({$nome}, {$nickname}, {$email});";

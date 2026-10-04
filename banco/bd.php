@@ -1,6 +1,7 @@
 <?php
 namespace Banco;
 
+use Exception;
 use DateTime;
 
 class BD {

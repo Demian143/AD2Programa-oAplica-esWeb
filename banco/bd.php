@@ -1,6 +1,8 @@
 <?php
 namespace Banco;
 
+use DateTime;
+
 class BD {
     private $con = null;
     public function __construct(
@@ -19,8 +21,19 @@ class BD {
             );
     }
     
+    public function save_desafio(
+        string $titulo, 
+        string $descricao, 
+        string $categoria,
+        DateTime $data_limite
+    ) {
+        $data_limite_formatado = $data_limite->format('Y-m-d H:i:s');
+        $query = "INSERT INTO desafios (titulo, descricao, categoria, data_limite, status) VALUES ({$titulo}, {$descricao}, {$categoria}, {$data_limite_formatado}, 'finalizado');";
+        mysqli_query($this->con, $query);
+    }
+
     public function save_usuario(string $nome, string $nickname, string $email) {
-        $query = "INSERT INTO usuarios (nome, nickname, email) VALUES ({$nome}, {$nickname}, {$email})";
+        $query = "INSERT INTO usuarios (nome, nickname, email) VALUES ({$nome}, {$nickname}, {$email});";
         mysqli_query($this->con, $query);
     }
 

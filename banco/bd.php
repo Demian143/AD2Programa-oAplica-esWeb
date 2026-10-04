@@ -18,6 +18,11 @@ class BD {
             $this->database
             );
     }
+    
+    public function save_usuario(string $nome, string $nickname, string $email) {
+        $query = "INSERT INTO usuarios (nome, nickname, email) VALUES ({$nome}, {$nickname}, {$email})";
+        mysqli_query($this->con, $query);
+    }
 
     public function list_submissoes(): array {
         $query = "SELECT id, usuario_id, desafio_id, modelo_id, nota, data_submissao FROM submissoes";

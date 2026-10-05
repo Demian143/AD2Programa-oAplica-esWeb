@@ -1,9 +1,9 @@
 <?php
-require_once __DIR__ . '/../banco/BD.php';
+require_once __DIR__ . '/../banco/bd.php';
 
 use Banco\BD;
 
-$bd = new BD("host", "database", "user", "password");
+$bd = new BD(getenv('HOST'), getenv('DATABASE'), getenv('USER'), getenv('PASSWORD'), getenv('PORT'));
 $bd->connect();
 
 if (isset($_POST['save_desafio'])) {

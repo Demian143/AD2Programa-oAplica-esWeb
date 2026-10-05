@@ -10,7 +10,8 @@ class BD {
         private string $host,
         private string $database,
         private string $user,
-        private string $password
+        private string $password,
+        private string $port
     ) {}
 
     public function connect() {
@@ -18,7 +19,8 @@ class BD {
             $this->host, 
             $this->user, 
             $this->password, 
-            $this->database
+            $this->database,
+            $this->port
             );
     }
 
@@ -196,7 +198,7 @@ class BD {
 
     public function update_submissao_nota(int $id, float $nota) {
         // RN05
-        if ( 0 > $nota > 100) {
+        if ( $nota < 0 || $nota > 100) {
             throw new Exception("Nota invalida.");
         }
         $query = "UPDATE submissoes SET nota={$nota} WHERE id={$id};";

@@ -7,7 +7,7 @@ services:
     container_name: prompt-battle-db
 
     ports:
-      - "3307:3307"
+        - "3307:3306"
 
     env_file:
       - .env

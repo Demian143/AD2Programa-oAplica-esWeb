@@ -7,20 +7,20 @@ use DateTime;
 class BD {
     private $con = null;
     public function __construct(
-        private string $host = getenv('HOST'),
-        private string $database = getenv('DATABASE'),
-        private string $user = getenv('USER'),
-        private string $password = getenv('PASSWORD'),
-        private string $port = getenv('PORT')
+        private ?string $host = null,
+        private ?string $database = null,
+        private ?string $user = null,
+        private ?string $password = null,
+        private ?string $port = null
     ) {}
 
     public function connect() {
         $this->con = mysqli_connect(
-            $this->host, 
-            $this->user, 
-            $this->password, 
-            $this->database,
-            $this->port
+            $this->host ?? getenv('HOST'), 
+            $this->user ?? getenv('USER'), 
+            $this->password ?? getenv('PASSWORD'), 
+            $this->database ?? getenv('DATABASE'),
+            $this->port ?? getenv('PORT')
             );
     }
 

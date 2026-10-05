@@ -1,0 +1,18 @@
+services:
+  mysql:
+    build: .
+    container_name: prompt-battle-db
+
+    ports:
+      - "3306:3306"
+
+    env_file:
+      - .env
+
+    environment:
+      MYSQL_DATABASE: ${DATABASE}
+      MYSQL_USER: ${USER}
+      MYSQL_PASSWORD: ${PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${PASSWORD}
+
+    command: --bind-address=0.0.0.0

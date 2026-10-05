@@ -1,4 +1,6 @@
-<?php 
+<?php
+require_once __DIR__ . '/../banco/BD.php';
+
 use Banco\BD;
 
 $bd = new BD("host", "database", "user", "password");

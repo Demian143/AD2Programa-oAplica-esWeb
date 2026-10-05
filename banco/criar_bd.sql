@@ -1,3 +1,5 @@
+USE prompt_battle;
+
 create table usuarios (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100),

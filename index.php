@@ -8,9 +8,9 @@
 <body>
     <div>
         <h1>Listas disponiveis</h1>
-        <a href="usuario/usuario_list.php">Usuarios</a>
-        <a href="submissao/submissao_list.php">Submissões</a>
-        <a href="modelo/modelo_list.php">Modelos</a>
+        <a href="usuario/usuario_list.php">Usuarios</a><br>
+        <a href="submissao/submissao_list.php">Submissões</a><br>
+        <a href="modelo/modelo_list.php">Modelos</a><br>
         <a href="desafio/desafio_list.php">Desafios</a>
     </div>
 </body>

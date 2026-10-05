@@ -3,7 +3,7 @@ require_once __DIR__ . '/../banco/bd.php';
 
 use Banco\BD;
 
-$bd = new BD(getenv('HOST'), getenv('DATABASE'), getenv('USER'), getenv('PASSWORD'), getenv('PORT'));
+$bd = new BD();
 $bd->connect();
 
 if (isset($_POST['save_usuario'])) {

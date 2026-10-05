@@ -1,6 +1,6 @@
 USE prompt_battle;
 
-create table usuarios (
+create table if not exists usuarios (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100),
     nickname VARCHAR(50) UNIQUE,
@@ -8,7 +8,7 @@ create table usuarios (
     pontos INT DEFAULT 0
 );
 
-create table modelos (
+create table if not exists modelos (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100),
     empresa VARCHAR(100),
@@ -16,7 +16,7 @@ create table modelos (
     status ENUM('ativo', 'inativo') DEFAULT 'ativo'
 );
 
-create table desafios (
+create table if not exists desafios (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(100),
     descricao TEXT,
@@ -25,7 +25,7 @@ create table desafios (
     status ENUM('aberto', 'finalizado')
 );
 
-create table submissoes (
+create table if not exists submissoes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     usuario_id INT,
     desafio_id INT,

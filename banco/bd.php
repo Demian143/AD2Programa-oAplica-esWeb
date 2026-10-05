@@ -7,11 +7,11 @@ use DateTime;
 class BD {
     private $con = null;
     public function __construct(
-        private string $host,
-        private string $database,
-        private string $user,
-        private string $password,
-        private string $port
+        private string $host = getenv('HOST'),
+        private string $database = getenv('DATABASE'),
+        private string $user = getenv('USER'),
+        private string $password = getenv('PASSWORD'),
+        private string $port = getenv('PORT')
     ) {}
 
     public function connect() {
@@ -99,8 +99,8 @@ class BD {
     }
 
     public function list_desafios(): array {
-        $query = "SELECT id, titulo, descricao, categoria, data_limite, status FROM modelos";
-        return mysqli_query($this->con, $query)->fetch_array();
+        $query = "SELECT id, titulo, descricao, categoria, data_limite, status FROM desafios;";
+        return mysqli_query($this->con, $query)->fetch_all(MYSQL_ASSOC) ?? [];
     }
 
     public function list_usuarios(): array {

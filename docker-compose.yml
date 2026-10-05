@@ -19,3 +19,17 @@ services:
       MYSQL_ROOT_PASSWORD: admin
 
     command: --bind-address=0.0.0.0
+  
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: prompt-battle-phpmyadmin
+
+    depends_on:
+      - mysql
+
+    ports:
+      - "8080:80"
+
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306

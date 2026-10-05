@@ -95,7 +95,7 @@ class BD {
 
     public function list_submissoes(): array {
         $query = "SELECT id, usuario_id, desafio_id, modelo_id, nota, data_submissao FROM submissoes";
-        return mysqli_query($this->con, $query)->fetch_array();
+        return mysqli_query($this->con, $query)->fetch_all(MYSQLI_ASSOC);
     }
 
     public function list_desafios(): array {
@@ -105,12 +105,12 @@ class BD {
 
     public function list_usuarios(): array {
         $query = "SELECT id, nome, nickname, email, pontos FROM usuarios";
-        return mysqli_query($this->con, $query)->fetch_array();
+        return mysqli_query($this->con, $query)->fetch_all(MYSQLI_ASSOC);
     }
 
     public function list_modelos(): array {
         $query = "SELECT id, nome, empresa, versao, status FROM modelos";
-        return mysqli_query($this->con, $query)->fetch_array();
+        return mysqli_query($this->con, $query)->fetch_all(MYSQLI_ASSOC);
     }
 
     public function ai_model_already_exists(int $usuario_id, int $modelo_id, int $desafio_id): bool | null {
@@ -163,7 +163,7 @@ class BD {
     public function remove_desafio(int $desafio_id) {
         //RN07
         $query_desafio_tem_submissoes = "SELECT * FROM submissoes WHERE desafio_id={$desafio_id};";
-        $res = mysqli_query($this->con, $query_desafio_tem_submissoes)->fetch_array();
+        $res = mysqli_query($this->con, $query_desafio_tem_submissoes)->fetch_all(MYSQLI_ASSOC);
         if (count($res) > 0) {
             throw new Exception("Há submissões relacionadas.");
         }
@@ -175,7 +175,7 @@ class BD {
     public function remove_modelo(int $modelo_id) {
         //RN08
         $query_desafio_tem_submissoes = "SELECT * FROM submissoes WHERE modelo_id={$modelo_id};";
-        $res = mysqli_query($this->con, $query_desafio_tem_submissoes)->fetch_array();
+        $res = mysqli_query($this->con, $query_desafio_tem_submissoes)->fetch_all(MYSQLI_ASSOC);
         if (count($res) > 0) {
             throw new Exception("Há submissões relacionadas.");
         }
@@ -187,7 +187,7 @@ class BD {
     public function remove_usuario(int $usuario_id) {
         //RN10
         $query_desafio_tem_submissoes = "SELECT * FROM submissoes WHERE usuario_id={$usuario_id};";
-        $res = mysqli_query($this->con, $query_desafio_tem_submissoes)->fetch_array();
+        $res = mysqli_query($this->con, $query_desafio_tem_submissoes)->fetch_all(MYSQLI_ASSOC);
         if (count($res) > 0) {
             throw new Exception("Há submissões relacionadas.");
         }
@@ -217,7 +217,7 @@ class BD {
         // Um usuário não pode realizar mais de uma submissão utilizando o mesmo
         // modelo de Inteligência Artificial em um mesmo desafio.
         $query_submissao_duplicada = "SELECT * FROM submissoes WHERE usuario_id={$usuario_id} AND desafio_id={$desafio_id} AND modelo_id={$modelo_id};";
-        $resp_submissao_duplicada = mysqli_query($this->con, $query_submissao_duplicada)->fetch_array();
+        $resp_submissao_duplicada = mysqli_query($this->con, $query_submissao_duplicada)->fetch_all(MYSQLI_ASSOC);
 
         if (count($resp_submissao_duplicada) > 0) {
             throw new Exception("Submissão duplicada");

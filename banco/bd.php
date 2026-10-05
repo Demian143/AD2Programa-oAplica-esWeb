@@ -194,6 +194,15 @@ class BD {
         mysqli_query($this->con, $query_remover_desafio);
     }
 
+    public function update_submissao_nota(int $id, float $nota) {
+        // RN05
+        if ( 0 > $nota > 100) {
+            throw new Exception("Nota invalida.");
+        }
+        $query = "UPDATE submissoes SET nota={$nota} WHERE id={$id};";
+        mysqli_query($this->con, $query);
+    }
+
     public function save_submissao(
         int $usuario_id,
         int $desafio_id,
@@ -231,10 +240,6 @@ class BD {
         if ($modelo["status"] == "inativo") {
             throw new Exception("Modelo inativo.");
         }
-        // RN05
-        // if ( 0 > $nota > 100) {
-        //    throw new Exception("Nota invalida.");
-        //}
         
         $query_salvar_requisicao = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta, nota) VALUES ({$usuario_id}, {$desafio_id}, {$modelo_id}, {$prompt}, {$resposta}, {$nota});";
         mysqli_query($this->con, $query_salvar_requisicao);

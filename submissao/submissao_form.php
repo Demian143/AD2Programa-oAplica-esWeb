@@ -14,6 +14,13 @@ if (isset($_POST['save_submissao'])) {
     header("Location: submissao_list.php");
     exit();
 }
+if (isset($_POST['update_submissao_nota'])) {
+    $submissao_id = $_POST['id'];
+    $nota = $_POST['nota'];
+    $bd->update_submissao_nota($submissao_id, $nota);
+    header("Location: submissao_list.php");
+    exit();
+}
 ?>
 <html>
     <h1>Cadastrar Nova Submissão</h1>
@@ -29,5 +36,13 @@ if (isset($_POST['save_submissao'])) {
         <label for="resposta">Resposta</label><br>
         <input id="resposta" name="resposta" type="text" required>
         <button type="submit" name="save_submissao">Salvar</button>
+    </form>
+    <h1>Atualizar Nota</h1>
+    <form method="POST">
+        <label for="id">Submissão ID</label><br>
+        <input id="id" name="id" type="number" required>
+        <label for="nota">Nota</label><br>
+        <input id="nota" name="nota" type="float" required>
+        <button type="submit" name="update_submissao_nota">Atualizar Nota</button>
     </form>
 </html>

@@ -100,7 +100,7 @@ class BD {
 
     public function list_desafios(): array {
         $query = "SELECT id, titulo, descricao, categoria, data_limite, status FROM desafios;";
-        return mysqli_query($this->con, $query)->fetch_all(MYSQL_ASSOC) ?? [];
+        return mysqli_query($this->con, $query)->fetch_all(MYSQLI_ASSOC) ?? [];
     }
 
     public function list_usuarios(): array {

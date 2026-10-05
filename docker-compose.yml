@@ -1,18 +1,21 @@
 services:
   mysql:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+
     container_name: prompt-battle-db
 
     ports:
-      - "3306:3306"
+      - "3307:3307"
 
     env_file:
       - .env
 
     environment:
-      MYSQL_DATABASE: ${DATABASE}
-      MYSQL_USER: ${USER}
-      MYSQL_PASSWORD: ${PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${PASSWORD}
+      MYSQL_DATABASE: prompt_battle
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: admin
 
     command: --bind-address=0.0.0.0

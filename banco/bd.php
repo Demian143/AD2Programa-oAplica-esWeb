@@ -67,8 +67,8 @@ class BD {
         return mysqli_query($this->con, $query);
     }
 
-    public function save_modelo($nome, $empresa, $versao){
-        $query = "INSERT INTO modelos (nome, empresa, versao) VALUES ({$nome}, {$empresa}, {$versao});";
+    public function save_modelo(string $nome, string $empresa, string $versao){
+        $query = "INSERT INTO modelos (nome, empresa, versao) VALUES ('{$nome}', '{$empresa}', '{$versao}');";
         mysqli_query($this->con, $query);
     }
     
@@ -79,7 +79,7 @@ class BD {
         DateTime $data_limite
     ) {
         $data_limite_formatado = $data_limite->format('Y-m-d H:i:s');
-        $query = "INSERT INTO desafios (titulo, descricao, categoria, data_limite, status) VALUES ({$titulo}, {$descricao}, {$categoria}, {$data_limite_formatado}, 'finalizado');";
+        $query = "INSERT INTO desafios (titulo, descricao, categoria, data_limite, status) VALUES ('{$titulo}', '{$descricao}', '{$categoria}', '{$data_limite_formatado}', 'aberto');";
         mysqli_query($this->con, $query);
     }
 
@@ -89,7 +89,7 @@ class BD {
     //}
 
     public function save_usuario(string $nome, string $nickname, string $email) {
-        $query = "INSERT INTO usuarios (nome, nickname, email) VALUES ({$nome}, {$nickname}, {$email});";
+        $query = "INSERT INTO usuarios (nome, nickname, email) VALUES ('{$nome}', '{$nickname}', '{$email}');";
         mysqli_query($this->con, $query);
     }
 
@@ -243,7 +243,7 @@ class BD {
             throw new Exception("Modelo inativo.");
         }
         
-        $query_salvar_requisicao = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta, nota) VALUES ({$usuario_id}, {$desafio_id}, {$modelo_id}, {$prompt}, {$resposta});";
+        $query_salvar_requisicao = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta, nota) VALUES ('{$usuario_id}', '{$desafio_id}', '{$modelo_id}', '{$prompt}', '{$resposta}');";
         mysqli_query($this->con, $query_salvar_requisicao);
     }
 }

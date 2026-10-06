@@ -132,7 +132,7 @@ class BD {
         string $status
     ) {
         if ($status == "aberto") {
-            $query = "UPDATE desafios SET status={$status} WHERE id={$desafio_id};";
+            $query = "UPDATE desafios SET status='{$status}' WHERE id={$desafio_id};";
             mysqli_query($this->con, $query);
             return;
         }
@@ -211,7 +211,7 @@ class BD {
         int $modelo_id,
         string $prompt,
         string $resposta,
-        // float $nota
+        float $nota
     ) {
         // RN01
         // Um usuário não pode realizar mais de uma submissão utilizando o mesmo
@@ -242,8 +242,12 @@ class BD {
         if ($modelo["status"] == "inativo") {
             throw new Exception("Modelo inativo.");
         }
+
+        if ( $nota < 0 || $nota > 100) {
+            throw new Exception("Nota invalida.");
+        }
         
-        $query_salvar_requisicao = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta, nota) VALUES ('{$usuario_id}', '{$desafio_id}', '{$modelo_id}', '{$prompt}', '{$resposta}');";
+        $query_salvar_requisicao = "INSERT INTO submissoes (usuario_id, desafio_id, modelo_id, prompt, resposta, nota) VALUES ('{$usuario_id}', '{$desafio_id}', '{$modelo_id}', '{$prompt}', '{$resposta}', '{$nota}');";
         mysqli_query($this->con, $query_salvar_requisicao);
     }
 }

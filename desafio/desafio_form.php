@@ -30,7 +30,7 @@ if (isset($_POST['update_desafio'])) {
         'descricao' => isset($_POST['descricao']) ? trim($_POST['descricao']) : null,
         'categoria' => isset($_POST['categoria']) ? trim($_POST['categoria']) : null,
         'data_limite' => isset($_POST['data_limite']) ? trim($_POST['data_limite']) : null,
-        'status' => $_POST['status'] ?? null
+        'status' => isset($_POST['status']) ? trim($_POST['status']) : null
     ];
 
     $bd->update_desafio($args);
@@ -230,7 +230,7 @@ if (isset($_POST['update_desafio'])) {
                     <input
                         id="data_limite_update"
                         name="data_limite"
-                        type="datetime-local"
+                        type="date"
                     >
                 </div>
                 <div class="form-group">

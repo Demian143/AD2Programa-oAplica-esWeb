@@ -23,25 +23,6 @@ class BD {
             $this->port ?? getenv('PORT')
             );
     }
-
-    public function update_desafio($args) {
-        if (!isset($args['id'])) {
-            return false;
-        }
-
-        $fields = [];
-        foreach ($args as $key => $value) {
-            if ($key === 'id') {
-                continue;
-            }
-            $escaped_value = mysqli_real_escape_string($this->con, $value);
-            $fields[] = "{$key} = '{$escaped_value}'";
-        }
-        $query = "UPDATE desafios SET " . implode(', ', $fields);
-        $query .= " WHERE id = " . (int)$args['id'] . ";";
-
-        return mysqli_query($this->con, $query);
-    }
     
     public function get_desafio(int $id): array {
         $query = "SELECT * FROM desafios WHERE id={$id};";
@@ -127,10 +108,43 @@ class BD {
         return true;
     }
 
+    public function update_desafio($args) {
+        if (!isset($args['id'])) {
+            throw new Exception('ID não informado.');
+        }
+
+        if (isset($args['status'])) {
+            $this->change_desafio_status($args['id'], $args['status']);
+
+        }
+
+        $fields = [];
+        foreach ($args as $key => $value) {
+            if ($key === 'id' || $key === 'status') {
+                continue;
+            }
+            if ($value === '' || $value === null) {
+                continue;
+            }
+            $escaped_value = mysqli_real_escape_string($this->con, $value);
+            $fields[] = "{$key} = '{$escaped_value}'";
+        }
+
+        if (empty($fields)) {
+            return;
+        }
+        
+        $query = "UPDATE desafios SET " . implode(', ', $fields);
+        $query .= " WHERE id = " . (int)$args['id'] . ";";
+
+        return mysqli_query($this->con, $query);
+    }
+
     public function change_desafio_status(
         int $desafio_id, 
         string $status
     ) {
+        // Preferi isolar o tratamento dos pontos para tornar a manutenção mais simples
         if ($status == "aberto") {
             $query = "UPDATE desafios SET status='{$status}' WHERE id={$desafio_id};";
             mysqli_query($this->con, $query);
@@ -156,7 +170,7 @@ class BD {
                                     WHERE usuario.id=submissao.usuario_id;";
         mysqli_query($this->con, $query_correcao_de_notas);
         
-        $query_set_status_finalizado = "UPDATE desafios SET status={$status} WHERE id={$desafio_id};";
+        $query_set_status_finalizado = "UPDATE desafios SET status='{$status}' WHERE id={$desafio_id};";
         mysqli_query($this->con, $query_set_status_finalizado);
     }
     
